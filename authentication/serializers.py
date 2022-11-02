@@ -10,14 +10,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
 
-    password = serializers.CharField(
-        read_only=True, required=True, validators=[validate_password],
-        style={'input_type': 'password', 'placeholder': 'Password'}
-    )
-    password2 = serializers.CharField(
-        read_only=True, required=True,
-        style={'input_type': 'password', 'placeholder': 'Password'}
-    )
+    # password = serializers.CharField(
+    #     read_only=True, required=True, validators=[validate_password]
+    #
+    # )
+    # password2 = serializers.CharField(
+    #     read_only=True, required=True, validators=[validate_password]
+    # )
 
     class Meta:
         model = User
@@ -25,6 +24,18 @@ class RegisterSerializer(serializers.ModelSerializer):
             'username', 'password', 'password2', 'email',
             'first_name', 'last_name'
         )
+        extra_kwargs = {
+            'password': {
+                'write_only': True,  # does not expose field in GET
+                'min_length': 8,  # minimum length of password
+                'style': {'input_type': 'password'},  # for browsable API
+            },
+            'password2': {
+                'write_only': True,  # does not expose field in GET
+                'min_length': 8,  # minimum length of password
+                'style': {'input_type': 'password'},  # for browsable API
+            },
+        }
 
     def validate(self, attrs):
         if attrs['password'] == attrs['password2']:
