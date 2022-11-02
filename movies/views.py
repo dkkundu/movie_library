@@ -26,6 +26,9 @@ class ListCreateMovieAPIView(ListCreateAPIView):
         # Assign the user who created the movie
         serializer.save(creator=self.request.user)
 
+    def get_queryset(self):
+        return self.queryset.filter(creator=self.request.user)
+
 
 class RetrieveUpdateDestroyMovieAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = MovieSerializer
