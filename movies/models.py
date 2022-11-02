@@ -7,9 +7,9 @@ class Movie(models.Model):
     year = models.IntegerField()
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
-    creator = models.ForeignKey('auth.User', related_name='films', on_delete=models.CASCADE)
+    creator = models.ForeignKey(
+        'auth.User', related_name='films', on_delete=models.CASCADE
+    )
 
     class Meta:
         ordering = ['-id']
-
-
